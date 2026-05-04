@@ -1,0 +1,25 @@
+services:
+  - type: static
+    name: bi-portal-frontend
+    env: static
+    buildCommand: ""
+    staticPublishDir: "."
+    routes:
+      - type: rewrite
+        source: /ai-insights
+        destination: /ai_insights.html
+      - type: rewrite
+        source: /dashboard
+        destination: /dashboard.html
+      - type: rewrite
+        source: /admin
+        destination: /admin.html
+      - type: rewrite
+        source: /login
+        destination: /login.html
+      - type: rewrite
+        source: /powerbi
+        destination: /powerbi.html
+      - type: rewrite
+        source: /
+        destination: /index.html

@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Insights - BI Portal</title>
+    <!-- Fallback for styles if style.css fails -->
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="config.js"></script>
+    <style>
+      :root {
+        --primary: #6366f1;
+        --primary-hover: #4f46e5;
+        --bg-main: #f8fafc;
+        --bg-sidebar: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --border: #e2e8f0;
+        --radius: 12px;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-main);
+        color: var(--text-main);
+        margin: 0;
+      }
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 280px;
+        background: var(--bg-sidebar);
+        border-right: 1px solid var(--border);
+        padding: 24px;
+        position: fixed;
+        height: 100vh;
+      }
+      .main-content {
+        margin-left: 280px;
+        flex: 1;
+        padding: 40px;
+      }
+      .card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 24px;
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 24px;
+      }
+      .btn {
+        padding: 12px 24px;
+        border-radius: var(--radius);
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--primary-hover);
+      }
+      .nav-links {
+        list-style: none;
+        margin-top: 40px;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        text-decoration: none;
+        color: var(--text-muted);
+        border-radius: 8px;
+      }
+      .nav-link.active {
+        background: #eef2ff;
+        color: var(--primary);
+      }
+      .insight-content h3 {
+        color: var(--primary);
+        margin: 20px 0 12px 0;
+      }
+      .insight-content p {
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+      .loading-overlay {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(99, 102, 241, 0.1);
+        border-left-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .chat-input-wrapper {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .chat-input-wrapper input {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      .chat-response {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 15px;
+        display: none;
+        border: 1px solid var(--border);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="sidebar">
+        <div
+          class="logo"
+          style="
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+          "
+        >
+          <i class="fa-solid fa-chart-pie"></i><span>BI PORTAL</span>
+        </div>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link"
+              ><i class="fa-solid fa-table"></i><span>Sales Data</span></a
+            >
+          </li>
+          <li class="nav-item" id="adminLink" style="display: none">
+            <a href="admin.html" class="nav-link"
+              ><i class="fa-solid fa-user-shield"></i
+              ><span>Admin Panel</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="dashboard.html" class="nav-link"
+              ><i class="fa-solid fa-chart-line"></i><span>Web Metrics</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="ai_insights.html" class="nav-link active"
+              ><i class="fa-solid fa-brain"></i><span>AI Insights</span></a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="main-content">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+          "
+        >
+          <div>
+            <h1 style="font-size: 28px; font-weight: 800">
+              AI Business Intelligence
+            </h1>
+            <p style="color: var(--text-muted)">
+              Llama 3 Powered Insights & Strategic Analysis
+            </p>
+          </div>
+          <button class="btn btn-primary" onclick="generateInsights()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Insights
+          </button>
+        </div>
+
+        <div class="card">
+          <div
+            id="placeholderText"
+            style="text-align: center; padding: 40px; color: var(--text-muted)"
+          >
+            <i
+              class="fa-solid fa-robot"
+              style="font-size: 48px; margin-bottom: 20px; opacity: 0.5"
+            ></i>
+            <p>
+              Click "Generate Insights" to analyze your latest sales trends.
+            </p>
+          </div>
+
+          <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <p style="font-weight: 700">Analyzing Sales Data...</p>
+          </div>
+
+          <div
+            id="insightOutput"
+            class="insight-content"
+            style="display: none"
+          ></div>
+        </div>
+
+        <div class="card">
+          <h3>Ask Strategic AI</h3>
+          <div class="chat-input-wrapper">
+            <input
+              type="text"
+              id="chatInput"
+              placeholder="Ask a question about your business data..."
+            />
+            <button class="btn btn-primary" onclick="askAI()" id="askBtn">
+              Ask AI
+            </button>
+          </div>
+          <div class="chat-response" id="chatResponse">
+            <div id="chatLoading" style="display: none">
+              <i class="fa-solid fa-circle-notch fa-spin"></i> Thinking...
+            </div>
+            <div id="chatText"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Ensure config exists
+      if (typeof CONFIG === "undefined") {
+        window.CONFIG = { API_BASE_URL: "" };
+      }
+
+      window.onload = function () {
+        let user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+          window.location.href = "login.html";
+          return;
+        }
+        if (user.role === "admin")
+          document.getElementById("adminLink").style.display = "block";
+
+        const cached = localStorage.getItem("ai_insights_cache");
+        if (cached) displayInsights(cached);
+      };
+
+      async function generateInsights() {
+        const overlay = document.getElementById("loadingOverlay");
+        const output = document.getElementById("insightOutput");
+        const placeholder = document.getElementById("placeholderText");
+
+        placeholder.style.display = "none";
+        output.style.display = "none";
+        overlay.style.display = "flex";
+
+        try {
+          const res = await fetch(`${CONFIG.API_BASE_URL}/api/ai-insights`);
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          localStorage.setItem("ai_insights_cache", data.insights);
+          displayInsights(data.insights);
+        } catch (e) {
+          alert("Error: " + e.message);
+          placeholder.style.display = "block";
+        } finally {
+          overlay.style.display = "none";
+        }
+      }
+
+      function displayInsights(text) {
+        const output = document.getElementById("insightOutput");
+        output.innerHTML =
+          typeof marked !== "undefined"
+            ? marked.parse(text)
+            : text.replace(/\n/g, "<br>");
+        output.style.display = "block";
+        document.getElementById("placeholderText").style.display = "none";
+      }
+
+      async function askAI() {
+        const input = document.getElementById("chatInput");
+        const responseDiv = document.getElementById("chatResponse");
+        const chatText = document.getElementById("chatText");
+        const chatLoading = document.getElementById("chatLoading");
+        const askBtn = document.getElementById("askBtn");
+
+        const question = input.value.trim();
+        if (!question) return;
+
+        responseDiv.style.display = "block";
+        chatLoading.style.display = "block";
+        chatText.style.display = "none";
+        askBtn.disabled = true;
+
+        try {
+          const res = await fetch(`${CONFIG.API_BASE_URL}/api/ask-ai`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+          });
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          chatText.innerHTML =
+            typeof marked !== "undefined"
+              ? marked.parse(data.answer)
+              : data.answer;
+          chatText.style.display = "block";
+        } catch (e) {
+          chatText.innerText = "Error: " + e.message;
+          chatText.style.display = "block";
+        } finally {
+          chatLoading.style.display = "none";
+          askBtn.disabled = false;
+        }
+      }
+    </script>
+  </body>
+</html>
