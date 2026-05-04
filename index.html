@@ -73,28 +73,31 @@
       </div>
 
       <div class="main-content">
-        <div class="hero-section">
-          <h1>Sales Repository</h1>
-          <p>Real-time access to global sales performance, metrics, and data integrity logs.</p>
+        <div class="header">
+          <div>
+            <h1>Strategic Sales Repository</h1>
+            <p class="text-muted">
+              Real-time access to global sales performance and metrics
+            </p>
+          </div>
         </div>
 
-        <div class="table-container">
+        <div class="card" style="padding: 0">
           <div
             style="
-              padding: 24px;
+              padding: 20px 24px;
               border-bottom: 1px solid var(--border);
               display: flex;
               justify-content: space-between;
               align-items: center;
-              background: rgba(255,255,255,0.5);
             "
           >
-            <div style="position: relative; width: 100%; max-width: 400px;">
+            <div style="position: relative">
               <i
                 class="fa-solid fa-search"
                 style="
                   position: absolute;
-                  left: 16px;
+                  left: 12px;
                   top: 50%;
                   transform: translateY(-50%);
                   color: var(--text-muted);
@@ -103,8 +106,8 @@
               <input
                 type="text"
                 id="searchBox"
-                placeholder="Search products, regions, categories..."
-                style="padding-left: 44px; background: white;"
+                placeholder="Search sales data..."
+                style="padding-left: 36px; width: 300px"
                 onkeyup="loadData(true)"
               />
             </div>
@@ -135,14 +138,13 @@
               display: flex;
               justify-content: space-between;
               align-items: center;
-              background: rgba(255,255,255,0.5);
             "
           >
             <span class="text-muted" id="pageInfo">Page 1 of 1</span>
-            <div style="display: flex; gap: 12px">
+            <div style="display: flex; gap: 8px">
               <button
                 id="prevBtn"
-                class="btn"
+                class="btn btn-primary"
                 onclick="changePage(-1)"
               >
                 <i class="fa-solid fa-chevron-left"></i>
